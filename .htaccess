@@ -1,0 +1,7 @@
+# L'interface d'administration charge Decap CMS depuis unpkg.com et dialogue avec
+# le service Git : la politique de contenu y est donc assouplie, pour ce dossier uniquement.
+<IfModule mod_headers.c>
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-eval' https://unpkg.com https://identity.netlify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https: http://localhost:8081; frame-src 'self' https:; frame-ancestors 'none'; base-uri 'self'"
+  Header always set X-Robots-Tag "noindex, nofollow"
+  Header set Cache-Control "no-store"
+</IfModule>

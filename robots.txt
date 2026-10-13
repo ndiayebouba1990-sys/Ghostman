@@ -1,0 +1,3 @@
+# Version de travail : indexation désactivée (site.prepublication = true).
+User-agent: *
+Disallow: /

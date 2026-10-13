@@ -1,0 +1,7 @@
+node_modules/
+tools/.apercu/
+.DS_Store
+Thumbs.db
+_site/
+_site_essai/
+tools/.publication.json

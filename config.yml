@@ -1,0 +1,284 @@
+# ==========================================================================
+# Interface d'administration (Decap CMS) — https://decapcms.org
+# Accessible à l'adresse /admin/ une fois le dépôt Git et l'authentification
+# configurés (voir README, section « Administration des contenus »).
+# ==========================================================================
+
+backend:
+  name: git-gateway        # ou « github » / « gitlab » selon l'hébergement du dépôt
+  branch: main
+
+# Édition sur un poste local, sans compte : lancer « npx decap-server » puis « npm run dev ».
+local_backend: true
+
+locale: fr
+site_url: https://www.uimcec.sn
+display_url: https://www.uimcec.sn
+logo_url: /assets/img/logo-uimcec-192.png
+
+media_folder: src/assets/img/uploads
+public_folder: /assets/img/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  # ------------------------------------------------------------------ Actualités
+  - name: actualites
+    label: Actualités
+    label_singular: Actualité
+    description: "Chaque actualité devient une page du site et apparaît sur l'accueil (les 4 plus récentes)."
+    folder: src/actualites
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    summary: "{{date | date('DD/MM/YYYY')}} — {{title}}"
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Titre, widget: string }
+      - { name: date, label: Date de publication, widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - { name: precision, label: "Précision de la date", widget: select, default: jour, options: [{ label: "Jour exact", value: jour }, { label: "Mois seulement (jour incertain)", value: mois }] }
+      - { name: rubrique, label: Rubrique, widget: select, options: ["Vie du réseau", "Partenariats", "Femmes entrepreneures", "Réseau", "Agriculture", "Services numériques"] }
+      - { name: resume, label: "Résumé (2 lignes maximum)", widget: text }
+      - { name: description, label: "Description pour les moteurs de recherche", widget: string, required: false, hint: "150 caractères environ." }
+      - { name: image, label: "Photographie de la photothèque (son nom, ex. marche-lompoul)", widget: string, required: false, hint: "Les noms disponibles figurent sur la page « Crédits photographiques » du site." }
+      - { name: image_televersee, label: "… ou nouvelle photographie à téléverser", widget: image, required: false, hint: "Format paysage, 1600 px de large minimum, 500 Ko maximum. Vérifiez vos droits sur l'image et l'accord des personnes photographiées." }
+      - { name: image_alt, label: "Description de la photographie (accessibilité)", widget: string, required: false }
+      - { name: source_nom, label: "Source (si l'article résume une publication externe)", widget: string, required: false }
+      - { name: source_date, label: "Date de la publication source", widget: string, required: false }
+      - { name: source_url, label: "Lien vers la publication source", widget: string, required: false }
+      - { name: body, label: Texte de l'article, widget: markdown }
+
+  # ------------------------------------------------------------------ Solutions
+  - name: solutions
+    label: Solutions (produits et services)
+    label_singular: Solution
+    description: "N'indiquez que des informations validées. Ne publiez ni taux ni tarif non confirmés."
+    folder: src/solutions
+    extension: md
+    format: frontmatter
+    create: true
+    slug: "{{slug}}"
+    summary: "{{ordre}}. {{title}}"
+    sortable_fields: [ordre, title]
+    fields:
+      - { name: title, label: "Nom court (menus)", widget: string }
+      - { name: titre_long, label: "Titre de la page", widget: string }
+      - { name: ordre, label: "Ordre d'affichage", widget: number, value_type: int }
+      - { name: icone, label: Icône, widget: select, options: [tirelire, projet, pousse, femmes, parapluie, compte, mobile, carte, transfert, boutique, mains, bouclier] }
+      - { name: accroche, label: "Accroche (une ligne)", widget: string }
+      - { name: resume, label: Résumé, widget: text }
+      - { name: description, label: "Description pour les moteurs de recherche", widget: string }
+      - { name: image, label: "Photographie (nom dans images.json ou image téléversée)", widget: string, required: false }
+      - { name: image_alt, label: "Description de la photographie", widget: string, required: false }
+      - { name: sujet_contact, label: "Objet présélectionné dans le formulaire de contact", widget: select, options: [epargne, credit, agricole, numerique, compte, agence, autre] }
+      - { name: interet, label: "Centre d'intérêt associé (personnalisation, voir _data/preferences.json)", widget: select, required: false, options: [epargne, credit, agricole, femmes, assurances, compte, numerique, agence] }
+      - { name: pour_qui, label: "À qui s'adresse cette solution ?", widget: list, field: { name: public, label: Public, widget: string } }
+      - name: offres
+        label: Ce que propose U-IMCEC
+        widget: list
+        required: false
+        fields:
+          - { name: titre, label: Titre, widget: string }
+          - { name: texte, label: Description, widget: text }
+          - { name: source, label: "Source de l'information", widget: string, required: false }
+      - { name: conditions, label: "Conditions (laisser vide pour le texte par défaut)", widget: text, required: false }
+      - { name: a_completer, label: "Note interne : informations à compléter (visible en version de travail)", widget: text, required: false }
+      - name: etapes
+        label: "Démarches (laisser vide pour le parcours type)"
+        widget: list
+        required: false
+        fields:
+          - { name: titre, label: Étape, widget: string }
+          - { name: texte, label: Explication, widget: text }
+      - { name: prochaine_etape, label: "Et ensuite ?", widget: text, required: false }
+      - { name: body, label: "Comprendre (texte d'introduction)", widget: markdown }
+
+  # ------------------------------------------------------------------ Réglages
+  - name: reglages
+    label: Réglages et données
+    files:
+      - name: site
+        label: "Coordonnées, réseaux sociaux, mise en ligne"
+        file: src/_data/site.json
+        fields:
+          - { name: nom, label: Nom, widget: string }
+          - { name: nom_complet, label: Nom complet, widget: string }
+          - { name: signature, label: "Signature sous le logo", widget: string }
+          - { name: url, label: "Adresse du site", widget: string }
+          - { name: langue, label: Langue, widget: hidden, default: fr }
+          - { name: description, label: "Description générale (moteurs de recherche)", widget: text }
+          - { name: prepublication, label: "Version de travail (bandeau, marqueurs « à confirmer », indexation bloquée)", widget: boolean, hint: "Décochez uniquement lorsque tous les contenus sont validés." }
+          - { name: prepublication_message, label: "Message du bandeau", widget: string }
+          - name: coordonnees
+            label: Coordonnées de la direction générale
+            widget: object
+            fields:
+              - { name: adresse_ligne1, label: "Adresse (ligne 1)", widget: string }
+              - { name: adresse_ligne2, label: "Adresse (ligne 2)", widget: string }
+              - { name: adresse_carte, label: "Adresse pour l'itinéraire", widget: string }
+              - { name: telephone, label: Téléphone, widget: string }
+              - { name: email, label: E-mail, widget: string }
+              - { name: horaires, label: "Horaires d'ouverture", widget: string, required: false }
+          - name: reglementaire
+            label: Informations réglementaires
+            widget: object
+            fields:
+              - { name: agrement, label: "Numéro d'agrément", widget: string }
+              - { name: autorite, label: Autorité, widget: string }
+              - { name: loi, label: "Loi applicable", widget: string }
+              - { name: creation, label: "Année de création", widget: number, value_type: int }
+          - name: reseaux
+            label: Réseaux sociaux
+            widget: list
+            fields:
+              - { name: nom, label: Nom, widget: string }
+              - { name: icone, label: Icône, widget: select, options: [linkedin, facebook, x] }
+              - { name: url, label: Adresse, widget: string }
+          - name: application
+            label: Application mobile
+            widget: object
+            fields:
+              - { name: nom, label: Nom, widget: string }
+              - { name: google_play, label: "Lien Google Play", widget: string }
+              - { name: mise_a_jour, label: "Dernière mise à jour (AAAA-MM-JJ)", widget: string }
+          - name: formulaire
+            label: Formulaire de contact
+            widget: object
+            fields:
+              - { name: point_de_traitement, label: "Adresse du script de traitement", widget: string }
+              - name: sujets
+                label: Objets proposés
+                widget: list
+                fields:
+                  - { name: cle, label: "Clé technique (ne pas modifier)", widget: string }
+                  - { name: libelle, label: Libellé, widget: string }
+          - name: mentions
+            label: Mentions légales
+            widget: object
+            fields:
+              - { name: directeur_publication, label: "Directeur de la publication", widget: string, required: false }
+              - { name: hebergeur, label: "Hébergeur (nom, adresse, téléphone)", widget: string, required: false }
+              - { name: declaration_cdp, label: "Référence de la formalité CDP", widget: string, required: false }
+
+      - name: agences
+        label: "Agences, caisses et guichets"
+        file: src/_data/agences.json
+        fields:
+          - { name: regions, label: Régions, widget: list, field: { name: region, label: Région, widget: string } }
+          - name: types
+            label: Types de points de service
+            widget: object
+            fields:
+              - { name: siege, label: Siège, widget: string }
+              - { name: caisse, label: Caisse, widget: string }
+              - { name: agence, label: Agence, widget: string }
+              - { name: guichet, label: Guichet, widget: string }
+          - name: liste
+            label: Points de service
+            label_singular: Point de service
+            widget: list
+            summary: "{{fields.nom}} — {{fields.localite}}"
+            fields:
+              - { name: id, label: "Identifiant (minuscules, sans espace)", widget: string }
+              - { name: nom, label: Nom, widget: string }
+              - { name: type, label: Type, widget: select, options: [{ label: "Direction générale", value: siege }, { label: "Caisse de base", value: caisse }, { label: Agence, value: agence }, { label: Guichet, value: guichet }] }
+              - { name: regions, label: "Région(s)", widget: select, multiple: true, options: [Dakar, Diourbel, Fatick, Kaffrine, Kaolack, Kédougou, Kolda, Louga, Matam, Saint-Louis, Sédhiou, Tambacounda, Thiès, Ziguinchor] }
+              - { name: localite, label: "Ville ou quartier", widget: string }
+              - { name: ou, label: "Formule de lieu (ex. « à Thiès », « en Casamance »)", widget: string, required: false }
+              - { name: adresse, label: Adresse, widget: string, required: false }
+              - { name: telephone, label: Téléphone, widget: string, required: false }
+              - { name: email, label: E-mail, widget: string, required: false }
+              - { name: horaires, label: Horaires, widget: string, required: false }
+              - { name: verifie, label: "Informations vérifiées par U-IMCEC (sinon masqué sur le site en ligne)", widget: boolean, default: false }
+              - { name: source, label: "Source de l'information (note interne)", widget: string, required: false }
+              - { name: page, label: "Créer une page dédiée (caisses de base)", widget: boolean, default: false }
+              - { name: presentation, label: "Présentation (page dédiée)", widget: text, required: false }
+
+      - name: chiffres
+        label: Chiffres clés
+        file: src/_data/chiffres.json
+        fields:
+          - { name: note, label: "Note de sources affichée sous les chiffres", widget: text }
+          - name: liste
+            label: Indicateurs
+            widget: list
+            summary: "{{fields.valeur}} {{fields.libelle}}"
+            fields:
+              - { name: valeur, label: Valeur, widget: string, required: false }
+              - { name: libelle, label: Libellé, widget: string }
+              - { name: detail, label: Précision, widget: string, required: false }
+              - { name: source, label: "Source et date de référence", widget: string, required: false }
+              - { name: confirme, label: "Chiffre confirmé (sinon masqué sur le site en ligne)", widget: boolean, default: false }
+
+      - name: accueil
+        label: "Page d'accueil (bannière, accès rapides, engagements)"
+        file: src/_data/accueil.json
+        fields:
+          - name: diapositives
+            label: Diapositives de la bannière
+            widget: list
+            summary: "{{fields.onglet}} — {{fields.titre}}"
+            fields:
+              - { name: onglet, label: "Libellé de l'onglet (1 ou 2 mots)", widget: string }
+              - { name: surtitre, label: Surtitre, widget: string }
+              - { name: titre, label: "Titre (8 mots maximum)", widget: string }
+              - { name: texte, label: "Texte (2 lignes maximum)", widget: text }
+              - { name: image, label: "Photographie (nom dans images.json)", widget: string }
+              - { name: position, label: "Cadrage (ex. 50% 40%)", widget: string, required: false }
+              - { name: bouton1, label: Bouton principal, widget: object, fields: [{ name: libelle, label: Libellé, widget: string }, { name: url, label: Lien, widget: string }] }
+              - { name: bouton2, label: Bouton secondaire, widget: object, fields: [{ name: libelle, label: Libellé, widget: string }, { name: url, label: Lien, widget: string }] }
+          - name: besoins
+            label: Accès rapides
+            widget: list
+            summary: "{{fields.titre}}"
+            fields:
+              - { name: icone, label: Icône, widget: string }
+              - { name: titre, label: Titre, widget: string }
+              - { name: texte, label: Texte, widget: string }
+              - { name: url, label: "Lien (ex. /credit.html)", widget: string }
+              - { name: interet, label: "Centre d'intérêt associé (personnalisation)", widget: select, required: false, options: [epargne, credit, agricole, femmes, assurances, compte, numerique, agence] }
+          - name: mission
+            label: Présentation
+            widget: object
+            fields:
+              - { name: citation, label: Citation, widget: text }
+              - { name: source, label: "Source de la citation", widget: string }
+              - name: piliers
+                label: Piliers
+                widget: list
+                fields:
+                  - { name: icone, label: Icône, widget: string }
+                  - { name: titre, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: text }
+          - name: engagements
+            label: Engagements
+            widget: list
+            summary: "{{fields.titre}}"
+            fields:
+              - { name: icone, label: Icône, widget: string }
+              - { name: titre, label: Titre, widget: string }
+              - { name: texte, label: Texte, widget: text }
+
+      - name: numerique
+        label: Services numériques
+        file: src/_data/numerique.json
+        fields:
+          - { name: intro, label: Introduction, widget: text }
+          - name: services
+            label: Services
+            widget: list
+            summary: "{{fields.titre}}"
+            fields:
+              - { name: id, label: Identifiant, widget: string }
+              - { name: icone, label: Icône, widget: string }
+              - { name: titre, label: Titre, widget: string }
+              - { name: resume, label: Résumé, widget: string }
+              - { name: texte, label: Texte, widget: text }
+              - { name: points, label: Fonctionnalités, widget: list, required: false, field: { name: point, label: Fonctionnalité, widget: string } }
+              - { name: a_completer, label: "Note interne : informations à compléter", widget: text, required: false }
+              - { name: source, label: Source, widget: string, required: false }
+              - { name: confirme, label: "Service confirmé", widget: boolean, default: true }
+          - { name: securite, label: "Conseils de sécurité", widget: list, field: { name: conseil, label: Conseil, widget: text } }

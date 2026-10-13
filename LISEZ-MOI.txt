@@ -1,0 +1,100 @@
+SITE U-IMCEC SÉNÉGAL — REFONTE (version de travail du 13 octobre 2026)
+=======================================================================
+
+VOIR LE SITE
+------------
+Double-cliquez sur « index.html » dans ce dossier. Le site s'ouvre dans votre
+navigateur, sans installation et sans connexion à Internet.
+
+Toutes les pages sont des fichiers .html posés dans ce dossier :
+
+  index.html ................ Accueil
+  solutions.html ............ Toutes les solutions
+  epargne.html, credit.html, financement-agricole.html,
+  femmes-et-jeunes.html, assurances.html, ouvrir-un-compte.html
+  services-numeriques.html .. Application mobile, carte, Bank to Wallet…
+  u-imcec.html .............. Qui sommes-nous ?
+  agences.html .............. Recherche d'agence (+ 4 fiches agence-….html)
+  actualites.html ........... Actualités (+ 6 articles actualite-….html)
+  contact.html .............. Coordonnées et formulaire
+  cookies.html .............. Cookies et préférences
+  mentions-legales.html, confidentialite.html, credits-photos.html,
+  plan-du-site.html, 404.html
+
+Le site s'adapte seul à l'écran : téléphone, tablette, ordinateur.
+Pour voir la version téléphone sur un ordinateur : ouvrez le site, appuyez
+sur F12, puis sur Ctrl + Maj + M.
+
+
+LES COOKIES DE PRÉFÉRENCES
+--------------------------
+À la première visite, un bandeau propose : Accepter / Refuser / Personnaliser.
+
+Si le visiteur accepte, le site retient les sujets qui l'intéressent (pages
+consultées, sujets cochés) et la région de sa recherche d'agence. Ensuite :
+  - l'accueil place en premier l'accès qui correspond à son sujet principal
+    et lui propose de reprendre là où il en était ;
+  - la recherche d'agence se rouvre sur sa région ;
+  - le formulaire de contact propose le bon objet, et le visiteur peut
+    joindre ses sujets à sa demande (case à cocher, jamais cochée d'avance).
+
+Si le visiteur refuse, rien n'est retenu. Il peut changer d'avis à tout moment
+(lien « Gérer mes cookies » en bas de chaque page, ou page cookies.html, qui
+montre exactement ce que le site a retenu et permet de tout effacer).
+
+Aucun cookie publicitaire, aucun outil de suivi d'une autre entreprise.
+
+À savoir : quand le site est ouvert depuis ce dossier (double-clic), les
+navigateurs refusent les cookies. Le site utilise alors le « stockage local »
+du navigateur, avec exactement le même fonctionnement. Une fois le site en
+ligne, ce sont de vrais cookies (durée : 6 mois).
+
+Ces cookies adaptent le site à CHAQUE visiteur. Ils ne donnent pas à U-IMCEC
+de statistiques d'ensemble (« quel sujet intéresse le plus nos visiteurs ? ») :
+il faudrait pour cela ajouter un outil de mesure d'audience, soumis au même
+accord du visiteur.
+
+
+CE QUI NE FONCTIONNE QU'UNE FOIS LE SITE EN LIGNE
+-------------------------------------------------
+  - L'envoi direct du formulaire de contact. Ouvert depuis ce dossier, le
+    formulaire l'indique clairement et propose d'envoyer le message par e-mail.
+  - Les redirections des anciennes adresses du site (fichier .htaccess).
+  - L'interface d'administration (dossier « admin »).
+
+
+METTRE LE SITE EN LIGNE
+-----------------------
+Déposez sur l'hébergement tout le contenu de ce dossier, SAUF :
+  - le dossier « _atelier » (sources et outils) ;
+  - ce fichier LISEZ-MOI.txt.
+N'oubliez pas le fichier « .htaccess » (il peut être masqué par Windows).
+Avant cela, lisez la liste de contrôle : _atelier\README.md, section 7.
+
+
+MODIFIER LE SITE
+----------------
+Ne modifiez pas les fichiers .html de ce dossier : ils sont recréés à chaque
+construction. Les contenus se modifient dans « _atelier\src », puis on
+double-clique sur « _atelier\construire.bat » (Node.js est nécessaire).
+Mode d'emploi complet : _atelier\README.md
+
+
+AVANT TOUTE PUBLICATION — À VALIDER PAR U-IMCEC
+-----------------------------------------------
+Le bandeau jaune « Version de travail » et les étiquettes jaunes signalent ce
+qui reste à confirmer. En particulier :
+  - le site officiel uimcec.sn était hors ligne les 11 et 13 octobre 2026 :
+    ses contenus ont été repris d'archives publiques ;
+  - les photographies sont des illustrations libres de droits (Sénégal,
+    2022-2026), signalées comme telles : elles ne montrent ni agences ni
+    clients de U-IMCEC et sont à remplacer par des photos officielles ;
+  - le logo provient de l'icône de l'application mobile : à remplacer par le
+    fichier officiel ;
+  - seuls le siège et les quatre caisses de base sont confirmés dans la
+    recherche d'agence (répertoire complet à fournir) ;
+  - aucun taux, tarif, témoignage ou chiffre n'a été inventé : ce qui manque
+    est indiqué comme « à compléter » ;
+  - les textes juridiques (mentions légales, confidentialité, cookies) sont
+    des modèles à faire relire par un juriste.
+Détail des sources : _atelier\docs\AUDIT-ET-SOURCES.md

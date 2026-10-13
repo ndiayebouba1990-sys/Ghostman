@@ -1,0 +1,27 @@
+{
+  "name": "uimcec-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Refonte du site institutionnel U-IMCEC Sénégal — générateur statique Eleventy, contenus administrables.",
+  "type": "module",
+  "scripts": {
+    "dev": "eleventy --serve --port=8080",
+    "build": "node tools/nettoyer.mjs && eleventy",
+    "images": "node tools/optimiser-images.mjs",
+    "verifier": "node tools/verifier-site.mjs",
+    "publier": "node tools/publier.mjs",
+    "tout": "node tools/nettoyer.mjs && eleventy && node tools/verifier-site.mjs && node tools/publier.mjs",
+    "apercu": "node tools/serveur-apercu.mjs",
+    "admin": "node tools/admin-local.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/figtree": "^5.3.0",
+    "decap-server": "^3.11.3",
+    "sharp": "^0.32.6"
+  }
+}
